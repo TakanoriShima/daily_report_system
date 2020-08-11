@@ -60,6 +60,10 @@ public class ReportsCreateServlet extends HttpServlet {
 
             String filePath = getServletContext().getRealPath("/uploads/") + filename;
             System.out.println(filePath);
+
+            File uploadDir = new File(getServletContext().getRealPath("/uploads/"));
+            if (!uploadDir.exists()) uploadDir.mkdir();
+
             part.write(filePath);
 
             /* S3 */
