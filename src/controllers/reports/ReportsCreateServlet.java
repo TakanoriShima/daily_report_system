@@ -8,19 +8,24 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import models.Employee;
 import models.Report;
 import models.validators.ReportValidator;
 import utils.DBUtil;
+import utils.EncryptUtil;
 
 /**
  * Servlet implementation class ReportsCreateServlet
+
  */
+@MultipartConfig
 @WebServlet("/reports/create")
 public class ReportsCreateServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -37,8 +42,20 @@ public class ReportsCreateServlet extends HttpServlet {
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("POST");
         String _token = (String)request.getParameter("_token");
         if(_token != null && _token.equals(request.getSession().getId())) {
+
+            // 画像アップロード
+            Part part = request.getPart("image");
+            String filename = getFileName(part);
+            String filePath = getServletContext().getRealPath("/uploads/") + filename;
+            System.out.println(filePath);
+
+            part.write(filePath);
+
+            System.out.println("画像アップロード完了");
+
             EntityManager em = DBUtil.createEntityManager();
 
             Report r = new Report();
@@ -46,10 +63,6 @@ public class ReportsCreateServlet extends HttpServlet {
             //レポート作成者のidを取得
             r.setEmployee((Employee)request.getSession().getAttribute("login_employee"));
 
-//            Integer approval_id = Integer.parseInt(request.getParameter("approval_id"));
-//            //上記で取得したidのレポートを取得
-//            Approval a = em.find(Approval.class, approval_id);
-//            r.setApproval(a);
 
             Date report_date = new Date(System.currentTimeMillis());
             String rd_str = request.getParameter("report_date");
@@ -70,6 +83,8 @@ public class ReportsCreateServlet extends HttpServlet {
             r.setCreated_at(currentTime);
             r.setUpdated_at(currentTime);
 
+            r.setImage(filename);
+
             Employee admin = em.find(Employee.class, Integer.parseInt(request.getParameter("admin")));
             r.setAdmin(admin);
             List<Employee> adminList = em.createNamedQuery("getAllAdmins", Employee.class).getResultList();
@@ -81,9 +96,6 @@ public class ReportsCreateServlet extends HttpServlet {
                 request.setAttribute("_token", request.getSession().getId());
                 request.setAttribute("report", r);
                 request.setAttribute("errors", errors);
-
-
-
 
                 RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/reports/new.jsp");
                 rd.forward(request, response);
@@ -99,6 +111,30 @@ public class ReportsCreateServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/reports/index");
             }
         }
+    }
+
+    private String getFileName(Part part) {
+        String[] headerArrays = part.getHeader("Content-Disposition").split(";");
+        String fileName = null;
+        for (String head : headerArrays) {
+            if (head.trim().startsWith("filename")) {
+                fileName = head.substring(head.indexOf('"')).replaceAll("\"", "");
+            }
+        }
+
+        int size = fileName.length();
+        int cut_length = 3;
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+
+        String randName = EncryptUtil.getPasswordEncrypt(
+                currentTime.toString(),
+                (String)this.getServletContext().getAttribute("salt")
+        );
+
+
+        fileName = randName + "." + (fileName.substring(size - cut_length));
+
+        return fileName;
     }
 
 }

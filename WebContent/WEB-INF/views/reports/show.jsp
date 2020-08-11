@@ -24,6 +24,12 @@
                             </td>
                         </tr>
                         <tr>
+                            <th>画像</th>
+                            <td>
+                                <img src="/daily_report_system/uploads/${report.image}" style="width: 50%">
+                            </td>
+                        </tr>
+                        <tr>
                             <th>登録日時</th>
                             <td>
                                 <fmt:formatDate value="${report.created_at}" pattern="yyyy-MM-dd HH:mm:ss" />

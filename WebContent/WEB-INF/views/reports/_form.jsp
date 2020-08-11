@@ -28,6 +28,19 @@
 <textarea name="content" rows="10" cols="50">${report.content}</textarea>
 <br /><br />
 
+<label for="image">画像</label><br />
+<input type="file" name="image">
+
+
+<c:if test="${report.image != null}">
+    <img src="/daily_report_system/uploads/${report.image}" style="width: 10%">
+</c:if>
+
+
+
+
+<br /><br />
+
 <label for="admin">承認者</label><br />
 <select name="admin">
     <option value="-1">選択してください</option>

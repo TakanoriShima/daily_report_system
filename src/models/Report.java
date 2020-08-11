@@ -47,11 +47,23 @@ public class Report {
     @Column(name = "content", nullable = false)
     private String content;
 
+    @Column(name = "image")
+    private String image;
+
+
     @Column(name = "created_at", nullable = false)
     private Timestamp created_at;
 
     @Column(name = "updated_at", nullable = false)
     private Timestamp updated_at;
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "approval_id", referencedColumnName = "id")
