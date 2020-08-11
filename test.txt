@@ -10,3 +10,9 @@ mysql://(ユーザ名):(パスワード)@(ドメイン)/(データベース名)?
 
 mysql -h (ドメイン) -u (ユーザ名) -p
 mysql -h us-cdbr-east-02.cleardb.com -u bc3e95031dcad2 -p
+
+C:\neon\workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\daily_report_system
+
+jdbc:mysql://us-cdbr-east-02.cleardb.com/heroku_3750c264a65af29?useSSL=false&useUnicode=true&characterEncoding=utf8
+
+heroku war:deploy daily_report_system.war --app daily-report-system-20200810 --webapp-runner 8.0.50.0
