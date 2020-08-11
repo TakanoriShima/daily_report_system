@@ -26,7 +26,8 @@
                         <tr>
                             <th>画像</th>
                             <td>
-                                <img src="/daily_report_system/uploads/${report.image}" style="width: 50%">
+                                <img src="https://quark2galaxy2quark.s3.amazonaws.com/tmp/${report.image}" style="width: 50%">
+                                <!--  <img src="/daily_report_system/uploads/${report.image}" style="width: 50%">-->
                             </td>
                         </tr>
                         <tr>
