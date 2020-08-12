@@ -22,7 +22,7 @@ import javax.persistence.Table;
         //      従業員がログインするときに社員番号とパスワードが正しいかのチェック
         @NamedQuery(name = "checkLoginCodeAndPassword", query = "SELECT e FROM Employee AS e WHERE e.delete_flag = 0 AND e.code = :code AND e.password = :pass"),
 //      全ての従業員情報を取得
-        @NamedQuery(name = "getAllAdmins", query = "SELECT e FROM Employee AS e WHERE e.admin_flag = 1 ORDER BY e.id")
+        @NamedQuery(name = "getAllAdminsExceptMe", query = "SELECT e FROM Employee AS e WHERE e.admin_flag = 1 AND NOT e.id = :admin_id ORDER BY e.id")
 })
 @Entity
 public class Employee {
