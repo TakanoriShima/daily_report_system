@@ -24,6 +24,16 @@
                             </td>
                         </tr>
                         <tr>
+                        <tr>
+                            <th>画像</th>
+                            <td>
+                                <c:if test="${approval.report.image != null}">
+                                    <img src="https://quark2galaxy2quark.s3.amazonaws.com/tmp/${approval.report.image}" style="width: 50%">
+                                 <!--   <img src="/daily_report_system/uploads/${report.image}" style="width: 10%"> -->
+                                </c:if>
+                            </td>
+                        </tr>
+                        <tr>
                             <th>登録日時</th>
                             <td>
                                 <fmt:formatDate value="${approval.report.created_at}" pattern="yyyy-MM-dd HH:mm:ss" />
