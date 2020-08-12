@@ -21,6 +21,11 @@
 <c:out value="${report.content}" />
 <br /><br />
 
+<c:if test="${report.image != null}">
+    <img src="https://quark2galaxy2quark.s3.amazonaws.com/tmp/${report.image}" style="width: 10%">
+ <!--   <img src="/daily_report_system/uploads/${report.image}" style="width: 10%"> -->
+</c:if>
+
 <label for="created_at">登録日時</label><br />
 <c:out value="${report.created_at}" />
 <br /><br />
