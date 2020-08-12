@@ -39,7 +39,8 @@ public class ReportsEditServlet extends HttpServlet {
         EntityManager em = DBUtil.createEntityManager();
 
         Report r = em.find(Report.class, Integer.parseInt(request.getParameter("id")));
-        List<Employee> adminList = em.createNamedQuery("getAllAdmins", Employee.class).getResultList();
+        Employee e = (Employee)request.getSession().getAttribute("login_employee");
+        List<Employee> adminList = em.createNamedQuery("getAllAdminsExceptMe", Employee.class).setParameter("admin_id", e.getId()).getResultList();
 
         em.close();
 

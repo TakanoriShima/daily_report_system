@@ -127,8 +127,11 @@ public class ReportsUpdateServlet extends HttpServlet {
 
             List<String> errors = ReportValidator.validate(r);
             if (errors.size() > 0) {
+                Employee e = (Employee)request.getSession().getAttribute("login_employee");
+                List<Employee> adminList = em.createNamedQuery("getAllAdminsExceptMe", Employee.class).setParameter("admin_id", e.getId()).getResultList(); request.setAttribute("adminList", adminList);
                 em.close();
 
+                request.setAttribute("adminList", adminList);
                 request.setAttribute("_token", request.getSession().getId());
                 request.setAttribute("report", r);
                 request.setAttribute("errors", errors);
