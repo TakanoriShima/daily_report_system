@@ -168,7 +168,10 @@ public class ReportsCreateServlet extends HttpServlet {
 
             Employee admin = em.find(Employee.class, Integer.parseInt(request.getParameter("admin")));
             r.setAdmin(admin);
-            List<Employee> adminList = em.createNamedQuery("getAllAdmins", Employee.class).getResultList();
+            Employee e = (Employee)request.getSession().getAttribute("login_employee");
+            List<Employee> adminList = em.createNamedQuery("getAllAdminsExceptMe", Employee.class).setParameter("admin_id", e.getId()).getResultList();
+            request.setAttribute("adminList", adminList);
+
 
             List<String> errors = ReportValidator.validate(r);
             if (errors.size() > 0) {
