@@ -45,6 +45,16 @@
                     </tbody>
                 </table>
 
+
+                <form method="POST" action="/daily_report_system/favorites/create">
+                    <input type="hidden" name="report_id" value="${report.id}">
+                    <input type ="submit" value="いいね">
+                </form>
+
+
+
+
+
                 <!-- 作成者以外の人が該当の日報を編集できないようにする（editリンクを出さない） -->
                 <c:if test="${sessionScope.login_employee.id == report.employee.id}">
                     <p><a href="<c:url value="/reports/edit?id=${report.id}" />">この日報を編集する</a></p>

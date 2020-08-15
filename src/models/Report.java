@@ -2,6 +2,7 @@ package models;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -56,6 +58,18 @@ public class Report {
 
     @Column(name = "updated_at", nullable = false)
     private Timestamp updated_at;
+
+    @ManyToMany(mappedBy = "myFavoriteReportList")
+    private Set<Employee> MyFoviritedEmployeeList;
+
+
+    public Set<Employee> getMyFoviritedEmployeeList() {
+        return MyFoviritedEmployeeList;
+    }
+
+    public void setMyFoviritedEmployeeList(Set<Employee> myFoviritedEmployeeList) {
+        MyFoviritedEmployeeList = myFoviritedEmployeeList;
+    }
 
     public String getImage() {
         return image;
