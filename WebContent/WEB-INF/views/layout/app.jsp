@@ -19,6 +19,7 @@
                             <a href="<c:url value='/approval/index' />">承認</a>&nbsp;&nbsp;
                         </c:if>
                         <a href="<c:url value='/reports/index' />">日報管理</a>&nbsp;&nbsp;
+                        <a href="<c:url value='/customers/index' />">顧客管理</a>&nbsp;&nbsp;
                     </c:if>
                 </div>
                 <c:if test="${sessionScope.login_employee != null}">
