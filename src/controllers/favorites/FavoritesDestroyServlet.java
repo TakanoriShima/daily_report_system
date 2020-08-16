@@ -1,7 +1,6 @@
 package controllers.favorites;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 
 import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
@@ -15,41 +14,29 @@ import models.Favorite;
 import utils.DBUtil;
 
 /**
- * Servlet implementation class FavoritesCreateController
+ * Servlet implementation class FavoritesDestroyServlet
  */
-@WebServlet("/favorites/create")
-public class FavoritesCreateServlet extends HttpServlet {
+@WebServlet("/favorites/destroy")
+public class FavoritesDestroyServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
 
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
         Integer report_id = Integer.parseInt(request.getParameter("report_id"));
         System.out.println("ReportId: " + report_id);
 
         EntityManager em = DBUtil.createEntityManager();
-        Favorite f = new Favorite();
-
         Employee e = (Employee) request.getSession().getAttribute("login_employee");
 
-        f.setEmployee_id(e.getId());
-        f.setReport_id(report_id);
-
-        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-        f.setCreated_at(currentTime);
-        f.setUpdated_at(currentTime);
+        Favorite f = (Favorite)em.createNamedQuery("getFavorite", Favorite.class).setParameter("employee_id", e.getId()).setParameter("report_id", report_id).getSingleResult();
 
         em.getTransaction().begin();
-
-        em.persist(f);
-
+        em.remove(f);       // データ削除
         em.getTransaction().commit();
         em.close();
 
-        request.getSession().setAttribute("flush", "お気に入り登録が完了しました。");
+
+        request.getSession().setAttribute("flush", "お気に入り解除が完了しました。");
 
         response.sendRedirect(request.getContextPath() + "/reports/show?id=" + report_id);
 

@@ -2,7 +2,7 @@ package models;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -60,16 +60,7 @@ public class Report {
     private Timestamp updated_at;
 
     @ManyToMany(mappedBy = "myFavoriteReportList")
-    private Set<Employee> MyFoviritedEmployeeList;
-
-
-    public Set<Employee> getMyFoviritedEmployeeList() {
-        return MyFoviritedEmployeeList;
-    }
-
-    public void setMyFoviritedEmployeeList(Set<Employee> myFoviritedEmployeeList) {
-        MyFoviritedEmployeeList = myFoviritedEmployeeList;
-    }
+    private List<Employee> MyFoviritedEmployeeList;
 
     public String getImage() {
         return image;
@@ -168,6 +159,14 @@ public class Report {
 
     public void setAdmin(Employee admin) {
         this.admin = admin;
+    }
+
+    public List<Employee> getMyFoviritedEmployeeList() {
+        return MyFoviritedEmployeeList;
+    }
+
+    public void setMyFoviritedEmployeeList(List<Employee> myFoviritedEmployeeList) {
+        MyFoviritedEmployeeList = myFoviritedEmployeeList;
     }
 
 }

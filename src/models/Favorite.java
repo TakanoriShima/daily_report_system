@@ -8,9 +8,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Table(name = "favorites")
+@NamedQueries({
+    @NamedQuery(name = "getMyFavoritesForOneReport", query = "SELECT COUNT(f) FROM Favorite AS f WHERE f.employee_id = :employee_id AND f.report_id = :report_id"),
+    @NamedQuery(name = "getFavorite", query = "SELECT f FROM Favorite AS f WHERE f.employee_id = :employee_id AND f.report_id = :report_id"),
+})
 @Entity
 public class Favorite {
     @Id
@@ -21,6 +27,16 @@ public class Favorite {
     @JoinColumn(name = "employee_id", nullable = false)
     private Integer employee_id;
 
+
+    @JoinColumn(name = "report_id", nullable = false)
+    private Integer report_id;
+
+    @Column(name = "created_at", nullable = false)
+    private Timestamp created_at;
+
+    @Column(name = "updated_at", nullable = false)
+    private Timestamp updated_at;
+
     public Integer getId() {
         return id;
     }
@@ -28,6 +44,7 @@ public class Favorite {
     public void setId(Integer id) {
         this.id = id;
     }
+
 
     public Integer getEmployee_id() {
         return employee_id;
@@ -60,14 +77,5 @@ public class Favorite {
     public void setUpdated_at(Timestamp updated_at) {
         this.updated_at = updated_at;
     }
-
-    @JoinColumn(name = "report_id", nullable = false)
-    private Integer report_id;
-
-    @Column(name = "created_at", nullable = false)
-    private Timestamp created_at;
-
-    @Column(name = "updated_at", nullable = false)
-    private Timestamp updated_at;
 
 }

@@ -1,0 +1,65 @@
+commit 900e67194829ea27429d8ea0a1e6e7db1c5a8ff2
+Author: Takanori Shima <quark2galaxy@gmail.com>
+Date:   Sat Aug 15 23:27:08 2020 +0900
+
+    error
+
+commit 7bd53ee458ea5f56b061a9b5b3a345aa3f9f28ad
+Author: Takanori Shima <quark2galaxy@gmail.com>
+Date:   Wed Aug 12 15:29:32 2020 +0900
+
+    modified!
+
+commit b50d7706e5cc096af15fc37864c20f0e4389ee02
+Author: Takanori Shima <quark2galaxy@gmail.com>
+Date:   Wed Aug 12 15:21:40 2020 +0900
+
+    approval final
+
+commit 32e90f80363e1d1c749a03e51fe53101a940b342
+Author: Takanori Shima <quark2galaxy@gmail.com>
+Date:   Wed Aug 12 15:07:35 2020 +0900
+
+    AllAdminsExceptMe final
+
+commit d259ac7856d225358514b7194785fcfed34a707a
+Author: Takanori Shima <quark2galaxy@gmail.com>
+Date:   Wed Aug 12 14:59:12 2020 +0900
+
+    AllAdminsExceptMe modified
+
+commit 695bcc1b725e9a1d2169700c5e1916943a8b3df3
+Author: Takanori Shima <quark2galaxy@gmail.com>
+Date:   Wed Aug 12 14:21:49 2020 +0900
+
+    AdminWxceptMe
+
+commit 3972145766ec947291f6f350670256fc2bbcf8a1
+Author: Takanori Shima <quark2galaxy@gmail.com>
+Date:   Wed Aug 12 00:11:36 2020 +0900
+
+    S3 complete! for Heroku
+
+commit 607663c414506ea6436357ae97c8d01a8a92a9d7
+Author: Takanori Shima <quark2galaxy@gmail.com>
+Date:   Tue Aug 11 23:46:42 2020 +0900
+
+    s3 done
+
+commit 1bb8a2e55b4330b1a9e20e76f5531d90123e72bd
+Author: Takanori Shima <quark2galaxy@gmail.com>
+Date:   Tue Aug 11 23:13:30 2020 +0900
+
+    's3'
+
+commit 6b775e8b9ac17604723cf43631fd836b450fb88f
+Author: Takanori Shima <quark2galaxy@gmail.com>
+Date:   Tue Aug 11 16:22:08 2020 +0900
+
+    'images'
+
+commit 66c0d83c286645bcdcd5fc8dec8fde6e654b6e01
+Author: Takanori Shima <quark2galaxy@gmail.com>
+Date:   Mon Aug 10 22:44:24 2020 +0900
+
+    'approval'

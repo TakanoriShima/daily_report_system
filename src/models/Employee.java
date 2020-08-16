@@ -1,7 +1,7 @@
 package models;
 
 import java.sql.Timestamp;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -60,18 +60,8 @@ public class Employee {
     @ManyToMany
     @JoinTable(name="favorites", joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name="report_id"))
-    private Set<Report> myFavoriteReportList;
+    private List<Report> myFavoriteReportList;
 
-
-
-
-    public Set<Report> getMyFavoriteReportList() {
-        return myFavoriteReportList;
-    }
-
-    public void setMyFavoriteReportList(Set<Report> myFavoriteReportList) {
-        this.myFavoriteReportList = myFavoriteReportList;
-    }
 
     public Integer getId() {
         return id;
@@ -135,5 +125,13 @@ public class Employee {
 
     public void setDelete_flag(Integer delete_flag) {
         this.delete_flag = delete_flag;
+    }
+
+    public List<Report> getMyFavoriteReportList() {
+        return myFavoriteReportList;
+    }
+
+    public void setMyFavoriteReportList(List<Report> myFavoriteReportList) {
+        this.myFavoriteReportList = myFavoriteReportList;
     }
 }

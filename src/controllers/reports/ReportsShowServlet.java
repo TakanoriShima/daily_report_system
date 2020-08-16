@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import models.Employee;
 import models.Report;
 import utils.DBUtil;
 
@@ -35,6 +36,14 @@ public class ReportsShowServlet extends HttpServlet {
         EntityManager em = DBUtil.createEntityManager();
 
         Report r = em.find(Report.class, Integer.parseInt(request.getParameter("id")));
+
+        Employee e = (Employee) request.getSession().getAttribute("login_employee");
+
+        long favoritesCount = (long)em.createNamedQuery("getMyFavoritesForOneReport", Long.class).setParameter("employee_id", e.getId()).setParameter("report_id", r.getId()).getSingleResult();
+
+        System.out.println("Count!  " + favoritesCount);
+
+        request.setAttribute("favorites_count", favoritesCount);
 
         em.close();
 

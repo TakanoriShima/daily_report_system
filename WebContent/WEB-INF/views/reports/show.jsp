@@ -5,6 +5,11 @@
     <c:param name="content">
         <c:choose>
             <c:when test="${report != null}">
+                 <c:if test="${flush != null}">
+                    <div id="flush_success">
+                        <c:out value="${flush}"></c:out>
+                    </div>
+                </c:if>
                 <h2>日報　詳細ページ</h2>
 
                 <table>
@@ -45,11 +50,23 @@
                     </tbody>
                 </table>
 
+                <c:choose>
+                    <c:when test="${favorites_count == 0}">
+                        <form method="POST" action="/daily_report_system/favorites/create">
+                            <input type="hidden" name="report_id" value="${report.id}">
+                            <input type ="submit" value="いいね">
+                        </form>
+                    </c:when>
+                    <c:otherwise>
+                        <form method="POST" action="/daily_report_system/favorites/destroy">
+                            <input type="hidden" name="report_id" value="${report.id}">
+                            <input type ="submit" value="いいね解除">
+                        </form>
 
-                <form method="POST" action="/daily_report_system/favorites/create">
-                    <input type="hidden" name="report_id" value="${report.id}">
-                    <input type ="submit" value="いいね">
-                </form>
+                    </c:otherwise>
+                </c:choose>
+
+
 
 
 
