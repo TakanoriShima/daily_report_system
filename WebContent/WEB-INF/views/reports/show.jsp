@@ -47,6 +47,26 @@
                                 <fmt:formatDate value="${report.updated_at}" pattern="yyyy-MM-dd HH:mm:ss" />
                             </td>
                         </tr>
+                        <tr>
+                            <th>いいね数</th>
+                            <td>
+                                <c:out value="${liked_count}件" />
+                            </td>
+                        </tr>
+
+                        <c:if test="${MyFoviritedEmployeeList != null}">
+                            <tr>
+                                <th>いいねをしてくれた人の一覧</th>
+                                <td>
+                                    <ul>
+                                    <c:forEach var="emp" items="${MyFoviritedEmployeeList}">
+                                        <li><c:out value="${emp.name}" /></li>
+                                    </c:forEach>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </c:if>
+
                     </tbody>
                 </table>
 

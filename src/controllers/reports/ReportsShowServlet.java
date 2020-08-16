@@ -1,6 +1,7 @@
 package controllers.reports;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.servlet.RequestDispatcher;
@@ -40,6 +41,13 @@ public class ReportsShowServlet extends HttpServlet {
         Employee e = (Employee) request.getSession().getAttribute("login_employee");
 
         long favoritesCount = (long)em.createNamedQuery("getMyFavoritesForOneReport", Long.class).setParameter("employee_id", e.getId()).setParameter("report_id", r.getId()).getSingleResult();
+
+        List<Employee> MyFoviritedEmployeeList = r.getMyFoviritedEmployeeList();
+
+        int liked_count = MyFoviritedEmployeeList.size();
+
+        request.setAttribute("MyFoviritedEmployeeList", MyFoviritedEmployeeList);
+        request.setAttribute("liked_count", liked_count);
 
         System.out.println("Count!  " + favoritesCount);
 
