@@ -49,6 +49,31 @@ public class Report {
     @Column(name = "content", nullable = false)
     private String content;
 
+    @JoinColumn(name = "customer_id")
+    private Integer customer_id;
+
+
+
+    public Integer getCustomer_id() {
+        return customer_id;
+    }
+
+    public void setCustomer_id(Integer customer_id) {
+        this.customer_id = customer_id;
+    }
+
+    public String getBusiness() {
+        return business;
+    }
+
+    public void setBusiness(String business) {
+        this.business = business;
+    }
+
+    @Lob
+    @Column(name = "business")
+    private String business;
+
     @Column(name = "image")
     private String image;
 

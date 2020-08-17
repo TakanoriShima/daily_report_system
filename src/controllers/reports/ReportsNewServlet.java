@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import models.Customer;
 import models.Employee;
 import models.Report;
 import utils.DBUtil;
@@ -47,6 +48,8 @@ public class ReportsNewServlet extends HttpServlet {
         request.setAttribute("report", r);
         request.setAttribute("adminList", adminList);
 
+        List<Customer> myCustomerList = em.createNamedQuery("getMyAllCustomers", Customer.class).setParameter("employee", e).getResultList();
+        request.setAttribute("myCustomerList", myCustomerList);
 
 
 

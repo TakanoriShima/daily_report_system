@@ -54,5 +54,22 @@
 
 <br /><br />
 
+<label for="customer_id">顧客</label><br />
+<select name="customer_id">
+    <option value="-1">選択してください</option>
+    <c:forEach var="customer" items="${myCustomerList}">
+        <option value="${customer.id}">
+                <c:out value="${customer.name}" />
+        </option>
+    </c:forEach>
+</select>
+
+<br /><br />
+
+
+<label for="business">商談内容</label><br />
+<textarea name="business" rows="10" cols="50">${report.business}</textarea>
+<br /><br />
+
 <input type="hidden" name="_token" value="${_token}" />
 <button type="submit">投稿</button>

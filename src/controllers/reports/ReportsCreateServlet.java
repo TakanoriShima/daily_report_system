@@ -156,6 +156,11 @@ public class ReportsCreateServlet extends HttpServlet {
 
             r.setTitle(request.getParameter("title"));
             r.setContent(request.getParameter("content"));
+            String business = request.getParameter("business");
+            if(business.equals("") != true){
+                r.setBusiness(business);
+                r.setCustomer_id(Integer.parseInt(request.getParameter("customer_id")));
+            }
             //            Integer approval_id = Integer.parseInt(request.getParameter("approval_id"));
             //            r.setApproval_id(request.getParameter("approval_id"));
             //          上記で取得したidのレポートを取得
