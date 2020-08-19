@@ -8,24 +8,24 @@
                 <c:out value="${flush}"></c:out>
             </div>
         </c:if>
-        <h2>顧客　一覧</h2>
+        <h2>商談　一覧</h2>
         <table id="report_list">
             <tbody>
                 <tr>
-                    <th class="report_name">氏名</th>
-                    <th class="report_action">操作</th>
+                    <th class="report_name">日にち</th>
+                    <th class="report_action">商談内容</th>
                 </tr>
-                <c:forEach var="customer" items="${myAllCustomerList}" varStatus="status">
+                <c:forEach var="business" items="${getCustomerBisinessList}" varStatus="status">
                     <tr class="row${status.count % 2}">
-                        <td class="report_name"><c:out value="${customer.name}" /></td>
-                        <td class="report_action"><a href="<c:url value='/business/show?customer_id=${customer.id}' />">商談を見る</a></td>
+                        <td class="report_name"><c:out value="${business.report_date}" /></td>
+                        <td class="report_action"><c:out value="${business.business}" /></td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
 
 
-        <p><a href="<c:url value='/customers/new' />">新規顧客の登録</a></p>
+        <p><a href="<c:url value='/' />">トップページへ</a></p>
 
     </c:param>
 </c:import>
