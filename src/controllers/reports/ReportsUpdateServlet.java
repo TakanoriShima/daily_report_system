@@ -23,6 +23,7 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
+import models.Customer;
 import models.Employee;
 import models.Report;
 import models.validators.ReportValidator;
@@ -156,6 +157,8 @@ public class ReportsUpdateServlet extends HttpServlet {
                 request.setAttribute("_token", request.getSession().getId());
                 request.setAttribute("report", r);
                 request.setAttribute("errors", errors);
+                List<Customer> myCustomerList = em.createNamedQuery("getMyAllCustomers", Customer.class).setParameter("employee", e).getResultList();
+                request.setAttribute("myCustomerList", myCustomerList);
 
                 em.close();
                 RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/reports/edit.jsp");
