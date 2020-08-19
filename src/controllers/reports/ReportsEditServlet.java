@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import models.Customer;
 import models.Employee;
 import models.Report;
 import utils.DBUtil;
@@ -41,6 +42,8 @@ public class ReportsEditServlet extends HttpServlet {
         Report r = em.find(Report.class, Integer.parseInt(request.getParameter("id")));
         Employee e = (Employee)request.getSession().getAttribute("login_employee");
         List<Employee> adminList = em.createNamedQuery("getAllAdminsExceptMe", Employee.class).setParameter("admin_id", e.getId()).getResultList();
+        List<Customer> myCustomerList = em.createNamedQuery("getMyAllCustomers", Customer.class).setParameter("employee", e).getResultList();
+        request.setAttribute("myCustomerList", myCustomerList);
 
         em.close();
 

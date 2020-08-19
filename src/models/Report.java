@@ -1,6 +1,7 @@
 package models;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -52,6 +53,28 @@ public class Report {
 
     @JoinColumn(name = "customer_id")
     private Integer customer_id;
+
+    @Column(name = "start_time", nullable = false)
+    private Time start_time;
+
+    public Time getStart_time() {
+        return start_time;
+    }
+
+    public void setStart_time(Time start_time) {
+        this.start_time = start_time;
+    }
+
+    public Time getEnd_time() {
+        return end_time;
+    }
+
+    public void setEnd_time(Time end_time) {
+        this.end_time = end_time;
+    }
+
+    @Column(name = "end_time", nullable = false)
+    private Time end_time;
 
 
 

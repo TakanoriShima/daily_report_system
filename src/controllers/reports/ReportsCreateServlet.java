@@ -3,6 +3,7 @@ package controllers.reports;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -56,87 +57,94 @@ public class ReportsCreateServlet extends HttpServlet {
 
             // 画像アップロード
             Part part = request.getPart("image");
-            String filename = getFileName(part);
-
-            String filePath = getServletContext().getRealPath("/uploads/") + filename;
-            System.out.println(filePath);
-
-            File uploadDir = new File(getServletContext().getRealPath("/uploads/"));
-            if (!uploadDir.exists()) uploadDir.mkdir();
-
-            part.write(filePath);
-
-            /* S3 */
-            final String region = "us-east-1";
-            final String awsAccessKey = "AKIASNU7DZ6PTNGHCBYL";
-            final String awsSecretKey = "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";
-            final String bucketName = "quark2galaxy2quark";
+            System.out.println("!!!Part " + part);
+            System.out.println("!!!Part " + part.getSize());
+            String filename = "";
+            if(part.getSize() != 0){
+                filename = getFileName(part);
 
 
+                String filePath = getServletContext().getRealPath("/uploads/") + filename;
+                System.out.println(filePath);
 
-            // 認証情報を用意
-            AWSCredentials credentials = new BasicAWSCredentials(
-                // アクセスキー
-                    awsAccessKey,
-                // シークレットキー
-                    awsSecretKey
-            );
+                File uploadDir = new File(getServletContext().getRealPath("/uploads/"));
+                if (!uploadDir.exists()) uploadDir.mkdir();
 
-            // クライアントを生成
-            AmazonS3 s3 = AmazonS3ClientBuilder
-                .standard()
-                // 認証情報を設定
-                .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                // リージョンを AP_NORTHEAST_1(東京) に設定
-                .withRegion(region)
-                .build();
+                part.write(filePath);
 
-         // === ファイルから直接アップロードする場合 ===
-         // アップロードするファイル
-         File file = new File(filePath);
-         // ファイルをアップロード
-         s3.putObject(
-                 // アップロード先バケット名
-                 bucketName,
-                 // アップロード後のキー名
-                 "tmp/" + filename,
-                 // ファイルの実体
-                 file
-         );
+                /* S3 */
+                final String region = "us-east-1";
+                final String awsAccessKey = "AKIASNU7DZ6PTNGHCBYL";
+                final String awsSecretKey = "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";
+                final String bucketName = "quark2galaxy2quark";
 
 
-//            final long threshold = 5L * 1024L * 1024L;
-//            final TransferManager transferManager = TransferManagerBuilder.standard()
-//                                     .withS3Client(s3)
-//                                     .withMultipartUploadThreshold(threshold)
-//                                     .build();
-//
-//            final Upload upload = transferManager.upload(bucketName, uploadFile.getName(), uploadFile);
-//            try {
-//                upload.waitForCompletion();
-//            } catch (AmazonServiceException e) {
-//                // TODO 自動生成された catch ブロック
-//                e.printStackTrace();
-//            } catch (AmazonClientException e) {
-//                // TODO 自動生成された catch ブロック
-//                e.printStackTrace();
-//            } catch (InterruptedException e) {
-//                // TODO 自動生成された catch ブロック
-//                e.printStackTrace();
-//            }
-//
-//
-//            // 6. 転送マネージャーを終了させる
-//            transferManager.shutdownNow();
-            /* end S3 */
 
-            /* for local */
+                // 認証情報を用意
+                AWSCredentials credentials = new BasicAWSCredentials(
+                    // アクセスキー
+                        awsAccessKey,
+                    // シークレットキー
+                        awsSecretKey
+                );
 
-            //            String filePath = getServletContext().getRealPath("/uploads/") + filename;
-            //            System.out.println(filePath);
-            //            part.write(filePath);
+                // クライアントを生成
+                AmazonS3 s3 = AmazonS3ClientBuilder
+                    .standard()
+                    // 認証情報を設定
+                    .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                    // リージョンを AP_NORTHEAST_1(東京) に設定
+                    .withRegion(region)
+                    .build();
 
-            System.out.println("画像アップロード完了");
+             // === ファイルから直接アップロードする場合 ===
+             // アップロードするファイル
+             File file = new File(filePath);
+             // ファイルをアップロード
+             s3.putObject(
+                     // アップロード先バケット名
+                     bucketName,
+                     // アップロード後のキー名
+                     "tmp/" + filename,
+                     // ファイルの実体
+                     file
+             );
+
+
+//                final long threshold = 5L * 1024L * 1024L;
+//                final TransferManager transferManager = TransferManagerBuilder.standard()
+//                                         .withS3Client(s3)
+//                                         .withMultipartUploadThreshold(threshold)
+//                                         .build();
+    //
+//                final Upload upload = transferManager.upload(bucketName, uploadFile.getName(), uploadFile);
+//                try {
+//                    upload.waitForCompletion();
+//                } catch (AmazonServiceException e) {
+//                    // TODO 自動生成された catch ブロック
+//                    e.printStackTrace();
+//                } catch (AmazonClientException e) {
+//                    // TODO 自動生成された catch ブロック
+//                    e.printStackTrace();
+//                } catch (InterruptedException e) {
+//                    // TODO 自動生成された catch ブロック
+//                    e.printStackTrace();
+//                }
+    //
+    //
+//                // 6. 転送マネージャーを終了させる
+//                transferManager.shutdownNow();
+                /* end S3 */
+
+                /* for local */
+
+                //            String filePath = getServletContext().getRealPath("/uploads/") + filename;
+                //            System.out.println(filePath);
+                //            part.write(filePath);
+
+                System.out.println("画像アップロード完了");
+
+            }
 
             EntityManager em = DBUtil.createEntityManager();
 
@@ -161,6 +169,17 @@ public class ReportsCreateServlet extends HttpServlet {
                 r.setBusiness(business);
                 r.setCustomer_id(Integer.parseInt(request.getParameter("customer_id")));
             }
+
+            try{
+                Time start_time = Time.valueOf(request.getParameter("start_time") + ":00");
+                Time end_time = Time.valueOf(request.getParameter("end_time") + ":00");
+                r.setStart_time(start_time);
+                r.setEnd_time(end_time);
+            }catch(Exception e){
+                r.setStart_time(Time.valueOf("00:00:00"));
+                r.setEnd_time(Time.valueOf("00:00:00"));
+            }
+
             //            Integer approval_id = Integer.parseInt(request.getParameter("approval_id"));
             //            r.setApproval_id(request.getParameter("approval_id"));
             //          上記で取得したidのレポートを取得
@@ -169,7 +188,10 @@ public class ReportsCreateServlet extends HttpServlet {
             r.setCreated_at(currentTime);
             r.setUpdated_at(currentTime);
 
-            r.setImage(filename);
+            if(part.getSize() != 0){
+                r.setImage(filename);
+            }
+
 
             Employee admin = em.find(Employee.class, Integer.parseInt(request.getParameter("admin")));
             r.setAdmin(admin);

@@ -1,5 +1,6 @@
 package models.validators;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,18 @@ public class ReportValidator {
             errors.add(admin_error);
         }
 
+        String start_time_error = _validateStartTime(r.getStart_time());
+        if (!start_time_error.equals("") ) {
+            errors.add(start_time_error);
+        }
+
+        String end_time_error = _validateEndTime(r.getEnd_time());
+        if (!end_time_error.equals("") && end_time_error != null) {
+            errors.add(end_time_error);
+        }
+
+
+
         return errors;
     }
 
@@ -50,6 +63,22 @@ public class ReportValidator {
     private static String _validateAdmin(Employee admin) {
         if(admin == null || admin.getId() == -1){
             return "承認者を選択してください。";
+        }
+
+        return "";
+    }
+
+    private static String _validateStartTime(Time start_time) {
+        if(start_time.toString().equals("00:00:00")){
+            return "出勤時間を選択してください。";
+        }
+
+        return "";
+    }
+
+    private static String _validateEndTime(Time end_time) {
+        if(end_time.toString().equals("00:00:00")){
+            return "退勤時間を選択してください。";
         }
 
         return "";

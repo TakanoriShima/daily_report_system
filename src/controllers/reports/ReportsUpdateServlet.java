@@ -3,6 +3,7 @@ package controllers.reports;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -54,57 +55,59 @@ public class ReportsUpdateServlet extends HttpServlet {
 
             // 画像アップロード
             Part part = request.getPart("image");
-            String filename = getFileName(part);
-            String filePath = getServletContext().getRealPath("/uploads/") + filename;
-            System.out.println(filePath);
+//            System.out.println("!!!Part " + part);
+            String filename = "";
+            if(part.getSize() != 0){
+                filename = getFileName(part);
+                String filePath = getServletContext().getRealPath("/uploads/") + filename;
+                System.out.println(filePath);
 
-            File uploadDir = new File(getServletContext().getRealPath("/uploads/"));
-            if (!uploadDir.exists()) uploadDir.mkdir();
+                File uploadDir = new File(getServletContext().getRealPath("/uploads/"));
+                if (!uploadDir.exists()) uploadDir.mkdir();
 
-            part.write(filePath);
-
-
-
-            /* S3 */
-            final String region = "us-east-1";
-            final String awsAccessKey = "AKIASNU7DZ6PTNGHCBYL";
-            final String awsSecretKey = "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";
-            final String bucketName = "quark2galaxy2quark";
-
-
-
-            // 認証情報を用意
-            AWSCredentials credentials = new BasicAWSCredentials(
-                // アクセスキー
-                    awsAccessKey,
-                // シークレットキー
-                    awsSecretKey
-            );
-
-            // クライアントを生成
-            AmazonS3 s3 = AmazonS3ClientBuilder
-                .standard()
-                // 認証情報を設定
-                .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                // リージョンを AP_NORTHEAST_1(東京) に設定
-                .withRegion(region)
-                .build();
-
-         // === ファイルから直接アップロードする場合 ===
-         // アップロードするファイル
-         File file = new File(filePath);
-         // ファイルをアップロード
-         s3.putObject(
-                 // アップロード先バケット名
-                 bucketName,
-                 // アップロード後のキー名
-                 "tmp/" + filename,
-                 // ファイルの実体
-                 file
-         );
+                part.write(filePath);
+                /* S3 */
+                final String region = "us-east-1";
+                final String awsAccessKey = "AKIASNU7DZ6PTNGHCBYL";
+                final String awsSecretKey = "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";
+                final String bucketName = "quark2galaxy2quark";
 
 
-            System.out.println("画像アップロード完了");
+
+                // 認証情報を用意
+                AWSCredentials credentials = new BasicAWSCredentials(
+                    // アクセスキー
+                        awsAccessKey,
+                    // シークレットキー
+                        awsSecretKey
+                );
+
+                // クライアントを生成
+                AmazonS3 s3 = AmazonS3ClientBuilder
+                    .standard()
+                    // 認証情報を設定
+                    .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                    // リージョンを AP_NORTHEAST_1(東京) に設定
+                    .withRegion(region)
+                    .build();
+
+             // === ファイルから直接アップロードする場合 ===
+             // アップロードするファイル
+             File file = new File(filePath);
+             // ファイルをアップロード
+             s3.putObject(
+                     // アップロード先バケット名
+                     bucketName,
+                     // アップロード後のキー名
+                     "tmp/" + filename,
+                     // ファイルの実体
+                     file
+             );
+
+
+                System.out.println("画像アップロード完了");
+            }
+
 
             EntityManager em = DBUtil.createEntityManager();
 
@@ -120,7 +123,25 @@ public class ReportsUpdateServlet extends HttpServlet {
             r.setTitle(request.getParameter("title"));
             r.setContent(request.getParameter("content"));
             r.setUpdated_at(new Timestamp(System.currentTimeMillis()));
-            r.setImage(filename);
+            if(part.getSize() != 0 ){
+                r.setImage(filename);
+            }
+
+            String business = request.getParameter("business");
+            if(business.equals("") != true){
+                r.setBusiness(business);
+                r.setCustomer_id(Integer.parseInt(request.getParameter("customer_id")));
+            }
+
+            try{
+                Time start_time = Time.valueOf(request.getParameter("start_time"));
+                Time end_time = Time.valueOf(request.getParameter("end_time"));
+                r.setStart_time(start_time);
+                r.setEnd_time(end_time);
+            }catch(Exception e){
+
+            }
+
 
             Employee admin = em.find(Employee.class, Integer.parseInt(request.getParameter("admin")));
             r.setAdmin(admin);
@@ -129,13 +150,14 @@ public class ReportsUpdateServlet extends HttpServlet {
             if (errors.size() > 0) {
                 Employee e = (Employee)request.getSession().getAttribute("login_employee");
                 List<Employee> adminList = em.createNamedQuery("getAllAdminsExceptMe", Employee.class).setParameter("admin_id", e.getId()).getResultList(); request.setAttribute("adminList", adminList);
-                em.close();
+
 
                 request.setAttribute("adminList", adminList);
                 request.setAttribute("_token", request.getSession().getId());
                 request.setAttribute("report", r);
                 request.setAttribute("errors", errors);
 
+                em.close();
                 RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/reports/edit.jsp");
                 rd.forward(request, response);
             } else {

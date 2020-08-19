@@ -29,15 +29,22 @@
 <br /><br />
 
 <label for="image">画像</label><br />
-<input type="file" name="image">
+<input type="file" name="image" value="0.jpg">
 
 
 <c:if test="${report.image != null}">
     <img src="https://quark2galaxy2quark.s3.amazonaws.com/tmp/${report.image}" style="width: 10%">
  <!--   <img src="/daily_report_system/uploads/${report.image}" style="width: 10%"> -->
 </c:if>
+<br/><br/>
 
+<label for="start_time">出勤時間</label><br />
+<input type="time" name="start_time" value="${report.start_time}" />
+<br /><br />
 
+<label for="end_time">退勤時間</label><br />
+<input type="time" name="end_time" value="${report.end_time}" />
+<br /><br />
 
 
 <br /><br />
@@ -46,7 +53,7 @@
 <select name="admin">
     <option value="-1">選択してください</option>
     <c:forEach var="admin" items="${adminList}">
-        <option value="${admin.id}">
+        <option value="${admin.id}" <c:if test="${report.admin.id == admin.id}"><c:out value="selected" /></c:if>>
                 <c:out value="${admin.name}" />
         </option>
     </c:forEach>
@@ -58,7 +65,7 @@
 <select name="customer_id">
     <option value="-1">選択してください</option>
     <c:forEach var="customer" items="${myCustomerList}">
-        <option value="${customer.id}">
+        <option value="${customer.id}" value="${admin.id}" <c:if test="${report.customer_id == customer.id}"><c:out value="selected" /></c:if>>
                 <c:out value="${customer.name}" />
         </option>
     </c:forEach>

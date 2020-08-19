@@ -31,8 +31,18 @@
                         <tr>
                             <th>画像</th>
                             <td>
-                                <img src="https://quark2galaxy2quark.s3.amazonaws.com/tmp/${report.image}" style="width: 50%">
-                                <!--  <img src="/daily_report_system/uploads/${report.image}" style="width: 50%">-->
+                            <c:choose>
+                                <c:when test="${report.image != null}" >
+                                    <img src="https://quark2galaxy2quark.s3.amazonaws.com/tmp/${report.image}" style="width: 10%">
+                                </c:when>
+                                <c:otherwise>
+                                    画像はありません。
+                                </c:otherwise>
+                            </c:choose>
+
+
+                             <!--   <img src="/daily_report_system/uploads/${report.image}" style="width: 10%"> -->
+
                             </td>
                         </tr>
                         <tr>
@@ -45,6 +55,18 @@
                             <th>更新日時</th>
                             <td>
                                 <fmt:formatDate value="${report.updated_at}" pattern="yyyy-MM-dd HH:mm:ss" />
+                            </td>
+                        </tr>
+                          <tr>
+                            <th>出勤時間</th>
+                            <td>
+                                <fmt:formatDate value="${report.start_time}" pattern="HH:mm" />
+                            </td>
+                        </tr>
+                          <tr>
+                            <th>退勤時間</th>
+                            <td>
+                                <fmt:formatDate value="${report.end_time}" pattern="HH:mm" />
                             </td>
                         </tr>
                         <tr>
@@ -70,6 +92,7 @@
                     </tbody>
                 </table>
 
+                <br/>
                 <c:choose>
                     <c:when test="${favorites_count == 0}">
                         <form method="POST" action="/daily_report_system/favorites/create">
@@ -87,11 +110,7 @@
                 </c:choose>
 
 
-
-
-
-
-
+                <br/>
                 <!-- 作成者以外の人が該当の日報を編集できないようにする（editリンクを出さない） -->
                 <c:if test="${sessionScope.login_employee.id == report.employee.id}">
                     <p><a href="<c:url value="/reports/edit?id=${report.id}" />">この日報を編集する</a></p>
